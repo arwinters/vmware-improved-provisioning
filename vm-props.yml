@@ -48,6 +48,7 @@
       GOVC_USERNAME: "{{ vcenter_username }}"
       VM_METADATA: "$(gzip -c9 </tmp/{{ vm_name }}-metadata.json | { base64 -w0 2>/dev/null || base64; })"
       VM_USERDATA: "$(gzip -c9 </tmp/{{ vm_name }}-userdata.yaml | { base64 -w0 2>/dev/null || base64; })"
+    delegate_to: 127.0.0.1
     register: govc_result
 #
 #  - name: Power-on VM
