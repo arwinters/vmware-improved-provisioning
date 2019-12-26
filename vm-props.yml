@@ -1,0 +1,62 @@
+---
+- name: Playbook - VM Customization
+  hosts: all
+  gather_facts: False
+  vars:
+    vm_name: pipo
+    vcenter_hostname: 10.211.55.49
+    vcenter_datacenter: Datacenter
+    vm_template: rhel77_template
+    vm_clone:
+  tasks:
+
+    - name: Deploy VM from vCenter template
+      vmware_guest:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: no
+        datacenter: "{{ vcenter_datacenter }}"
+        state: present
+        folder: /Datacenter/vm
+        template: "{{ vm_template }}"
+        name: "{{ vm_name }}"
+      delegate_to: 127.0.0.1
+      register: vm_deploy_result
+      when: vm_clone is defined
+
+  - name: Configure VM metadata
+    template:
+         src: ./templates/metadata.json.j2
+        dest: "/tmp/{{ vm_name}}-metadata.json"
+    register: metadata_results
+#
+#  - name: Configure VM userdata
+#    template:
+#         src:
+#        dest:
+#    register: userdata_results
+#
+#  - name: Set VM guest properties with govc
+#    command: govc vm.change -vm "{{ vm_name }}" -e guestinfo.metadata="{{ vm_guest_metadata  }}" -e guestinfo.metadata.encoding="gzip+base64"  -e guestinfo.userdata="{{ vm_guest_userdata }}" -e guestinfo.userdata.encoding="gzip+base64"
+#    environment:
+#      GOVC_PASSWORD: W3lkom99@
+#      GOVC_INSECURE: true
+#      GOVC_URL: https://10.211.55.49
+#      GOVC_USERNAME: administrator@vsphere.local
+#    register: govc_result
+#
+#  - name: Power-on VM
+#    vmguest:
+#    register: vm_run_results
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,13 @@
+#cloud-config
+
+
+users:
+  - default
+  - name: cloud-user
+    primary_group: wheel
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: sudo, wheel
+    ssh_import_id: None
+    lock_passwd: true
+    ssh_authorized_keys:
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDECJWZUr1I1u2aaYfNVfl8VwOkZ3S2U/BrtiohafaFdlFTf/rcT9JzryWUdW+tkfKp+5s5Euuli11opm8PcRVCIZsIAvEBPKgShC3o3fP/JMXxSyszz1+YJuyyv9o0X3y3PkElgQTiR/FDreBMjPpBXZupeIeuYzie+fWS51VAQm2cthK75/0NVzunHLwFXkJTYEygtWgsUcEqT3RGJB2PcfiOndz9qIWBeafMUKNkIt3fYO+8FmzSJZXfArmM43/5FQ1s+pAJ/rqXVgxjspAAwYLUiTMxpe6LyCClR7SDj9QQtDywJDIkGsVFURXTXFrjWicu9YaQyZG+2LOSl7PvyhpbwnIBkY2M3TIYAFFVxGziLRGh1nxPhHzuWHJQ+KcgSjgI5JwviImVaIIoDbgiR4PmsWuIsRlWX13fAwlhuBM+snfeMaUBgSCJvFWBgTO1ZIwrc7a2d9fa5N9pnu7y5Oc5HV4VRa6imgOdK1p+tZxUsxyWc6qQ9+KGV936SnAFjUzAuBcGrViyzdbimx9Uwrlv7ByizinWprhwAQM17YatZkzIDPHMGKgOBrYGesnM8rwfgKi0Jno6esNKtfHy6TfhhYB3Qbjb+1xM22uIEUcTGNM6GjuBc1WJk8P1WZ5UgMbIXzwNe4O4Lhze8drZMViGmz0WeyT1e7VQM9AN4w== a.r.winters@nforce-it.nl
