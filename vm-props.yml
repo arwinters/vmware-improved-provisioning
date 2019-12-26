@@ -58,11 +58,16 @@
       GOVC_USERNAME: "{{ vcenter_username }}"
     delegate_to: 127.0.0.1
     register: govc_result
-#
-#  - name: Power-on VM
-#    vmguest:
-#    register: vm_run_results
 
+  - name: Set powerstate of VM to poweredon by using VM name
+    vmware_guest:
+      hostname: "{{ vcenter_hostname }}"
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      validate_certs: no
+      name: "{{ vm_name }}"
+      state: poweredon
+    delegate_to: 127.0.0.1
 
 
 
