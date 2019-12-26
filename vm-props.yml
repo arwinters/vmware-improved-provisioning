@@ -25,11 +25,12 @@
     register: vm_deploy_result
     when: vm_clone is defined
 
-#    - name: Configure VM metadata
-#      template:
-#           src: ./templates/metadata.json.j2
-#          dest: "/tmp/{{ vm_name }}-metadata.json"
-#      register: metadata_results
+  - name: Configure VM metadata
+    template:
+      src: ./templates/metadata.json.j2
+      dest: "/tmp/{{ vm_name }}-metadata.json"
+    delegate_to: 127.0.0.1
+    register: metadata_results
 #
 #  - name: Configure VM userdata
 #    template:
