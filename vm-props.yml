@@ -83,7 +83,7 @@
       GOVC_USERNAME: "{{ vcenter_username }}"
     delegate_to: 127.0.0.1
     register: govc_result
-    when: govc_result.rc == 0 vm_debug is not defined
+    when: govc_result.rc == 0 and vm_debug is not defined
 
 
 
