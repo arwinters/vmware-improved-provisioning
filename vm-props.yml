@@ -7,7 +7,7 @@
     vcenter_hostname: 10.211.55.49
     vcenter_datacenter: Datacenter
     vm_template: rhel77_template
-    vm_clone:
+    vm_debug:
   tasks:
 
   - name: Deploy VM from vCenter template
@@ -23,7 +23,6 @@
       name: "{{ vm_name }}"
     delegate_to: 127.0.0.1
     register: vm_deploy_result
-    when: vm_clone is defined
 
   - name: Configure VM metadata
     template:
@@ -54,7 +53,7 @@
     when: vm_name is defined
 
   - name: Set VM guest properties with govc
-    command: govc vm.change -vm "/Datacenter/vm/{{ vm_name }}" -e guestinfo.metadata="{{ vm_metadata_base64_result.stdout }}" -e guestinfo.metadata.encoding="gzip+base64"  -e guestinfo.userdata="{{ vm_userdata_base64_result.stdout }}" -e guestinfo.userdata.encoding="gzip+base64"
+    shell: govc vm.change -vm "/Datacenter/vm/{{ vm_name }}" -e guestinfo.metadata="{{ vm_metadata_base64_result.stdout }}" -e guestinfo.metadata.encoding="gzip+base64"  -e guestinfo.userdata="{{ vm_userdata_base64_result.stdout }}" -e guestinfo.userdata.encoding="gzip+base64"
     environment:
       GOVC_PASSWORD: "{{ vcenter_password }}"
       GOVC_INSECURE: true
@@ -62,6 +61,7 @@
       GOVC_USERNAME: "{{ vcenter_username }}"
     delegate_to: 127.0.0.1
     register: govc_result
+    when: vm_metadata_base64_result.rc == 0 and vm_userdata_base64_result.rc == 0
 
   - name: Set powerstate of VM to poweredon by using VM name
     vmware_guest:
@@ -74,7 +74,16 @@
     delegate_to: 127.0.0.1
     when: govc_result.rc == 0
 
-
+  - name: Clean VM guest properties with govc
+    shell: govc vm.change -vm "/Datacenter/vm/{{ vm_name }}" -e guestinfo.metadata="" -e guestinfo.metadata.encoding="gzip+base64"  -e guestinfo.userdata="" -e guestinfo.userdata.encoding="gzip+base64"
+    environment:
+      GOVC_PASSWORD: "{{ vcenter_password }}"
+      GOVC_INSECURE: true
+      GOVC_URL: "https://{{ vcenter_hostname }}"
+      GOVC_USERNAME: "{{ vcenter_username }}"
+    delegate_to: 127.0.0.1
+    register: govc_result
+    when: govc_result.rc == 0 vm_debug is not defined
 
 
 
