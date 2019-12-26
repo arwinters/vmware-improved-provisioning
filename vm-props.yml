@@ -50,7 +50,7 @@
     register: vm_userdata_base64_result
 
   - name: Set VM guest properties with govc
-    command: govc vm.change -vm "/Datacenter/vm/{{ vm_name }}" -e guestinfo.metadata="{{ vm_metadata_base64_result.stdout }}" -e guestinfo.metadata.encoding="gzip+base64"  -e guestinfo.userdata="{{ vm_userdata.base64_result.stdout }}" -e guestinfo.userdata.encoding="gzip+base64"
+    command: govc vm.change -vm "/Datacenter/vm/{{ vm_name }}" -e guestinfo.metadata="{{ vm_metadata_base64_result.stdout }}" -e guestinfo.metadata.encoding="gzip+base64"  -e guestinfo.userdata="{{ vm_userdata_base64_result.stdout }}" -e guestinfo.userdata.encoding="gzip+base64"
     environment:
       GOVC_PASSWORD: "{{ vcenter_password }}"
       GOVC_INSECURE: true
