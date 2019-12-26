@@ -10,26 +10,26 @@
     vm_clone:
   tasks:
 
-    - name: Deploy VM from vCenter template
-      vmware_guest:
-        hostname: "{{ vcenter_hostname }}"
-        username: "{{ vcenter_username }}"
-        password: "{{ vcenter_password }}"
-        validate_certs: no
-        datacenter: "{{ vcenter_datacenter }}"
-        state: present
-        folder: /Datacenter/vm
-        template: "{{ vm_template }}"
-        name: "{{ vm_name }}"
-      delegate_to: 127.0.0.1
-      register: vm_deploy_result
-      when: vm_clone is defined
+  - name: Deploy VM from vCenter template
+    vmware_guest:
+      hostname: "{{ vcenter_hostname }}"
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      validate_certs: no
+      datacenter: "{{ vcenter_datacenter }}"
+      state: present
+      folder: /Datacenter/vm
+      template: "{{ vm_template }}"
+      name: "{{ vm_name }}"
+    delegate_to: 127.0.0.1
+    register: vm_deploy_result
+    when: vm_clone is defined
 
-  - name: Configure VM metadata
-    template:
-         src: ./templates/metadata.json.j2
-        dest: "/tmp/{{ vm_name}}-metadata.json"
-    register: metadata_results
+#    - name: Configure VM metadata
+#      template:
+#           src: ./templates/metadata.json.j2
+#          dest: "/tmp/{{ vm_name }}-metadata.json"
+#      register: metadata_results
 #
 #  - name: Configure VM userdata
 #    template:
