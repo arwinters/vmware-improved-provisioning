@@ -81,16 +81,16 @@
     delegate_to: 127.0.0.1
     when: govc_result.rc == 0
 
-  - name: Clean VM guest properties with govc
-    shell: govc vm.change -vm "/Datacenter/vm/{{ vm_name }}" -e guestinfo.metadata="" -e guestinfo.metadata.encoding=""  -e guestinfo.userdata="" -e guestinfo.userdata.encoding=""
-    environment:
-      GOVC_PASSWORD: "{{ vcenter_password }}"
-      GOVC_INSECURE: true
-      GOVC_URL: "https://{{ vcenter_hostname }}"
-      GOVC_USERNAME: "{{ vcenter_username }}"
-    delegate_to: 127.0.0.1
-    register: govc_result
-    when: vm_debug is defined
+#  - name: Clean VM guest properties with govc
+#    shell: govc vm.change -vm "/Datacenter/vm/{{ vm_name }}" -e guestinfo.metadata="" -e guestinfo.metadata.encoding=""  -e guestinfo.userdata="" -e guestinfo.userdata.encoding=""
+#    environment:
+#      GOVC_PASSWORD: "{{ vcenter_password }}"
+#      GOVC_INSECURE: true
+#      GOVC_URL: "https://{{ vcenter_hostname }}"
+#      GOVC_USERNAME: "{{ vcenter_username }}"
+#    delegate_to: 127.0.0.1
+#    register: govc_result
+#    when: vm_debug is defined
 
 
 
