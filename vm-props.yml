@@ -72,7 +72,7 @@
       name: "{{ vm_name }}"
       state: poweredon
     delegate_to: 127.0.0.1
-    when: govc_result.state == 'poweredon'
+    when: govc_result.rc == 0
 
 
 
