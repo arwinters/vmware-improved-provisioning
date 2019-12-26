@@ -31,21 +31,24 @@
       dest: "/tmp/{{ vm_name }}-metadata.json"
     delegate_to: 127.0.0.1
     register: metadata_results
-#
-#  - name: Configure VM userdata
-#    template:
-#         src:
-#        dest:
-#    register: userdata_results
-#
-#  - name: Set VM guest properties with govc
-#    command: govc vm.change -vm "{{ vm_name }}" -e guestinfo.metadata="{{ vm_guest_metadata  }}" -e guestinfo.metadata.encoding="gzip+base64"  -e guestinfo.userdata="{{ vm_guest_userdata }}" -e guestinfo.userdata.encoding="gzip+base64"
-#    environment:
-#      GOVC_PASSWORD: W3lkom99@
-#      GOVC_INSECURE: true
-#      GOVC_URL: https://10.211.55.49
-#      GOVC_USERNAME: administrator@vsphere.local
-#    register: govc_result
+
+  - name: Configure VM userdata
+    template:
+      src: ./templates/userdata.yaml
+      dest: "/tmp/{{ vm_name }}-userdata.yaml"
+    delegate_to: 127.0.0.1
+    register: userdata_results
+
+  - name: Set VM guest properties with govc
+    command: govc vm.change -vm "/Datacenter/vm/{{ vm_name }}" -e guestinfo.metadata="{{ lookup('env','VM_METADATA') }}" -e guestinfo.metadata.encoding="gzip+base64"  -e guestinfo.userdata="{{ lookup('env','VM_USERDATA') }}" -e guestinfo.userdata.encoding="gzip+base64"
+    environment:
+      GOVC_PASSWORD: "{{ vcenter_password }}"
+      GOVC_INSECURE: true
+      GOVC_URL: "https://{{ vcenter_hostname }}"
+      GOVC_USERNAME: "{{ vcenter_username }}"
+      VM_METADATA: "$(gzip -c9 </tmp/{{ vm_name }}-metadata.json | { base64 -w0 2>/dev/null || base64; })"
+      VM_USERDATA: "$(gzip -c9 </tmp/{{ vm_name }}-userdata.yaml | { base64 -w0 2>/dev/null || base64; })"
+    register: govc_result
 #
 #  - name: Power-on VM
 #    vmguest:
