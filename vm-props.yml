@@ -71,6 +71,7 @@
       validate_certs: no
       name: "{{ vm_name }}"
       state: poweredon
+      wait_for_customization: yes
     delegate_to: 127.0.0.1
     when: govc_result.rc == 0
 
