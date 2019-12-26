@@ -40,14 +40,14 @@
     register: userdata_results
 
   - name: Convert VM metadata into base64
-    command: echo $(gzip -c9 </tmp/{{ vm_name }}-metadata.json | { base64 -w0 2>/dev/null || base64; })
+    shell: echo $(gzip -c9 </tmp/{{ vm_name }}-metadata.json | { base64 -w0 2>/dev/null || base64; })
     delegate_to: 127.0.0.1
     register: vm_metadata_base64_result
 
   - debug: msg="Output conversion metadata {{ vm_metadata_base64_result }}"
 
   - name: Convert VM userdata into base64
-    command: echo $(gzip -c9 </tmp/{{ vm_name }}-userdata.yaml | { base64 -w0 2>/dev/null || base64; })
+    shell: echo $(gzip -c9 </tmp/{{ vm_name }}-userdata.yaml | { base64 -w0 2>/dev/null || base64; })
     delegate_to: 127.0.0.1
     register: vm_userdata_base64_result
 
@@ -60,8 +60,8 @@
       GOVC_INSECURE: true
       GOVC_URL: "https://{{ vcenter_hostname }}"
       GOVC_USERNAME: "{{ vcenter_username }}"
-#      VM_METADATA: "$(gzip -c9 </tmp/{{ vm_name }}-metadata.json | { base64 -w0 2>/dev/null || base64; })"
-#      VM_USERDATA: "$(gzip -c9 </tmp/{{ vm_name }}-userdata.yaml | { base64 -w0 2>/dev/null || base64; })"
+      VM_METADATA: "{{ vm_metadata.base64_result.stdout }}"
+      VM_USERDATA: "{{ vm_userdata.base64_result.stdout }}"
     delegate_to: 127.0.0.1
     register: govc_result
 #
