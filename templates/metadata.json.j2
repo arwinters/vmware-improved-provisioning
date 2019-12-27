@@ -1,5 +1,17 @@
 {
   "instance-id": "{{ vm_name }}",
   "local-hostname": "{{ vm_name }}",
-  "network": "tony_nw_value"
+  "network": {
+    "version": 2,
+    "ethernets": {
+      "interfaces": {
+        "match": {
+          "name": "ens*"
+        },
+        "addresses": ["10.211.55.101/24"],
+        "gateway4": "10.211.55.1",
+        "nameservers": ["8.8.8.8"]
+      }
+    }
+  }
 }
