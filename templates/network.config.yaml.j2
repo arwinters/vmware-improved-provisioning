@@ -1,13 +1,8 @@
 ---
-network:
-  config:
-    version: 2
-    ethernets:
-      interfaces:
-        match:
-          name: ens*
-        addresses:
-        - 10.211.55.101/24
-        gateway4: 10.211.55.1
-        nameservers:
-        - 8.8.8.8
+network-interfaces: |
+  iface ens196 inet static
+  address 192.168.56.106
+  network 192.168.56.0
+  netmask 255.255.255.0
+  broadcast 192.168.56.255
+  gateway 192.168.56.254
