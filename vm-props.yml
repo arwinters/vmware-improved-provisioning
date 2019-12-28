@@ -34,7 +34,7 @@
 
   - name: Configure VM metadata network
     template:
-      src: ./templates/network.config,yaml.j2
+      src: ./templates/network.config.yaml.j2
       dest: "/tmp/{{ vm_name }}-network.config.yaml"
     delegate_to: 127.0.0.1
     register: metadata_network_results
