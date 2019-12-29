@@ -6,7 +6,7 @@
     "ethernets": {
       "id0": {
         "match": {
-          "macaddress": "{{ vm.macaddress }}"
+          "macaddress": "{{ vm_deploy_result.instance.hw_eth.macaddress0 }}"
         },
         "dhcp4": false,
         "addresses": [
