@@ -1,12 +1,12 @@
 ---
 - name: Playbook - VM Customization
-  hosts: all
+  hosts: provision
   gather_facts: False
   vars:
     vm_name: pipo
     vcenter_hostname: 10.211.55.49
     vcenter_datacenter: Datacenter
-    vm_template: rhel77_template
+    vm_template: rhel81_template
     vm_debug:
     vm_ip_address: 10.211.55.102/24
     vm_gateway: 10.211.55.1
@@ -76,22 +76,3 @@
       wait_for_customization: yes
     delegate_to: 127.0.0.1
     when: govc_result.rc == 0
-
-#  - name: Clean VM guest properties with govc
-#    shell: govc vm.change -vm "/Datacenter/vm/{{ vm_name }}" -e guestinfo.metadata="" -e guestinfo.metadata.encoding=""  -e guestinfo.userdata="" -e guestinfo.userdata.encoding=""
-#    environment:
-#      GOVC_PASSWORD: "{{ vcenter_password }}"
-#      GOVC_INSECURE: true
-#      GOVC_URL: "https://{{ vcenter_hostname }}"
-#      GOVC_USERNAME: "{{ vcenter_username }}"
-#    delegate_to: 127.0.0.1
-#    register: govc_result
-#    when: vm_debug is defined
-
-
-
-
-
-
-
-
