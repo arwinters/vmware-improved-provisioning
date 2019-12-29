@@ -3,19 +3,25 @@
   "local-hostname": "{{ vm_name }}",
   "network": {
     "version": 2,
-    "config": {
-      "version": 2,
-      "ethernets": {
+    "ethernets": {
+      "id0": {
         "match": {
-          "name": "ens192"
+          "name": "ens*"
         },
+        "dhcp4": false,
         "addresses": [
-          "10.211.55.101/24"
+          "192.168.14.2/24"
         ],
-        "gateway4": "10.211.55.1",
-        "nameservers": [
-          "8.8.8.8"
-        ]
+        "gateway4": "192.168.14.1",
+        "nameservers": {
+          "search": [
+            "nforce-it.nl",
+            "nforce-it.local"
+          ],
+          "addresses": [
+            "8.8.8.8"
+          ]
+        }
       }
     }
   }
