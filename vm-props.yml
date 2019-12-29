@@ -8,6 +8,8 @@
     vcenter_datacenter: Datacenter
     vm_template: rhel77_template
     vm_debug:
+    vm_ip_address: 10.211.55.102/24
+    vm_gateway: 10.211.55.1
   tasks:
 
   - name: Deploy VM from vCenter template
@@ -34,14 +36,6 @@
     register: metadata_results
     when: vm_name is defined
 
-#  - name: Configure VM metadata network
-#    template:
-#      src: ./templates/network.config.yaml.j2
-#      dest: "/tmp/{{ vm_name }}-network.config.yaml"
-#    delegate_to: 127.0.0.1
-#    register: metadata_network_results
-#    when: vm_name is defined
-
   - name: Configure VM userdata
     template:
       src: ./templates/userdata.yaml
@@ -52,16 +46,9 @@
 
   - name: Convert VM metadata into base64
     shell: echo $(gzip -c9 </tmp/{{ vm_name }}-metadata.json | { base64 -w0 2>/dev/null || base64; })
-    #shell: echo $(sed 's~NETWORK_CONFIG~'"$(gzip -c9 </tmp/{{ vm_name}}-network.config.yaml | { base64 -w0 2>/dev/null || base64; } )"'~' </tmp/{{ vm_name }}-metadata.json | gzip -9 | { base64 -w0 2>/dev/null || base64; })
     delegate_to: 127.0.0.1
     register: vm_metadata_base64_result
     when: vm_name is defined
-
-#  - name: Convert VM metadata network into base64
-#    shell: echo $(gzip -c9 </tmp/{{ vm_name }}-metadata.network.json | { base64 -w0 2>/dev/null || base64; })
-#    delegate_to: 127.0.0.1
-#    register: vm_metadata_network_base64_result
-#    when: vm_name is defined
 
   - name: Convert VM userdata into base64
     shell: echo $(gzip -c9 </tmp/{{ vm_name }}-userdata.yaml | { base64 -w0 2>/dev/null || base64; })
@@ -70,7 +57,6 @@
     when: vm_name is defined
 
   - name: Set VM guest properties with govc
-#    shell: govc vm.change -vm "/Datacenter/vm/{{ vm_name }}" -e guestinfo.metadata="{{ vm_metadata_base64_result.stdout }}" -e guestinfo.metadata.encoding="gzip+base64" -e guestinfo.metadata.network="{{ vm_metadata_network_base64_result.stdout }}" -e guestinfo.metadata.network.encoding="gzip+base64" -e guestinfo.userdata="{{ vm_userdata_base64_result.stdout }}" -e guestinfo.userdata.encoding="gzip+base64"
     shell: govc vm.change -vm "/Datacenter/vm/{{ vm_name }}" -e guestinfo.metadata="{{ vm_metadata_base64_result.stdout }}" -e guestinfo.metadata.encoding="gzip+base64" -e guestinfo.metadata.network.encoding="gzip+base64" -e guestinfo.userdata="{{ vm_userdata_base64_result.stdout }}" -e guestinfo.userdata.encoding="gzip+base64"
     environment:
       GOVC_PASSWORD: "{{ vcenter_password }}"

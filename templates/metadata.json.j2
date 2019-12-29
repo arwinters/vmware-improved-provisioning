@@ -9,9 +9,9 @@
           "macaddress": "{{ vm_deploy_result.instance.hw_eth0.macaddress }}"
         },
         "addresses": [
-          "10.211.55.101/24"
+          "{{ vm_ip_address }}"
         ],
-        "gateway4": "10.211.55.1",
+        "gateway4": "{{ vm_gateway }}",
         "nameservers": {
           "search": [
             "nforce-it.nl",
