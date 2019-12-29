@@ -1,0 +1,8 @@
+---
+- name: Deploy VM template from scratch
+  hosts: provision
+  gather_facts: no
+  tasks:
+
+    - name: First Task
+      debug: msg="First task tony"
