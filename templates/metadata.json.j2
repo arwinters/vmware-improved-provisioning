@@ -8,6 +8,9 @@
         "match": {
           "macaddress": "{{ vm_deploy_result.instance.hw_eth0.macaddress }}"
         },
+        {% if vm_dhcp is defined %}
+        "dhcp4": true,
+        {% else %}
         "addresses": [
           "{{ vm_ip_address }}"
         ],
@@ -21,6 +24,7 @@
             "8.8.8.8"
           ]
         }
+        {% endif %}
       }
     }
   }

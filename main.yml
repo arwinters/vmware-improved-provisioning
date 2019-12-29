@@ -10,6 +10,7 @@
     vm_debug:
     vm_ip_address: 10.211.55.102/24
     vm_gateway: 10.211.55.1
+    vm_dhcp: true
   tasks:
 
   - name: Deploy VM from vCenter template
