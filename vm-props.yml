@@ -26,8 +26,6 @@
     delegate_to: 127.0.0.1
     register: vm_deploy_result
 
-  - debug: msg="{{ vm_deploy_result.instance.hw_eth0.macaddress }}"
-
   - name: Configure VM metadata
     template:
       src: ./templates/metadata.json.j2
