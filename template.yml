@@ -25,6 +25,7 @@
         folder: /Datacenter/vm/
         name: "{{ vm_name }}"
         state: poweredon
+        customization_spec: rhel81_specs
         guest_id: "{{ vm_guest_id }}"
         cdrom:
           type: iso
