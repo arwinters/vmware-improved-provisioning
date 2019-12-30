@@ -24,7 +24,7 @@
         folder: /Datacenter/vm/
         name: "{{ vm_name }}"
         state: poweredon
-        guest_id: "{{}}"
+        guest_id: "{{ vm_guest_id }}"
         cdrom:
           type: iso
           iso_path: "{{ vm_iso }}"
