@@ -15,20 +15,21 @@
     vm_iso: "[datastore1] rhel-8.1-x86_64-dvd.iso"
     #vm_guest_id: rhel7_64Guest
     vm_guest_id: rhel8_64Guest
-    vm_networks:
-      - network: VM Network
-        ip: 10.211.55.110
-        netmask: 255.255.255.0
-        device_type: vmxnet3
-      - network: VM Network2
-        ip: 192.168.10.11
-        netmask: 255.255.255.0
-        device_type: vmxnet3
-    vm_disks:
-      - disk:
+    vm_config:
+      vm_networks:
+        - network: VM Network
+          ip: 10.211.55.110
+          netmask: 255.255.255.0
+          device_type: vmxnet3
+        - network: VM Network2
+          ip: 192.168.10.11
+          netmask: 255.255.255.0
+          device_type: vmxnet3
+      vm_disks:
+        - disk:
           - size_gb: 50
           - type: thin
-      - disk:
+        - disk:
           - size_gb: 100
           - type: thin
     iso_location: tony_iso_store_bitch
@@ -37,7 +38,7 @@
     - name: Show VM disk configuration
       debug:
         msg: "Found disk {{ vm_disk }}"
-      with_items: "{{ vm_disks | default([]) }}"
+      with_items: "{{ vm_config.vm_disks | default([]) }}"
       loop_control:
         loop_var: vm_disk
 
@@ -45,12 +46,13 @@
     - name: Show VM network configuration
       debug:
         msg: "Found network {{ vm_network.network }}"
-      with_items: "{{ vm_networks | default([]) }}"
+      with_items: "{{ vm_config.vm_networks | default([]) }}"
       loop_control:
         loop_var: vm_network
 
-    - name: Test loop and subelements mdoule
+    - name: Test loop with_together
       debug:
-        msg: "Found networks {{ item.0.network }} "
-      loop: "{{ vm_networks|subelements('vm_disks') }}"
-
+        msg: "Found network --> {{ item.0 }} Found disk --> {{ item.1  }}"
+      with_together:
+      - "{{ vm_config.vm_networks }}"
+      - "{{ vm_config.vm_disks }}"
