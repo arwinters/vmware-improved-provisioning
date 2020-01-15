@@ -49,8 +49,7 @@
       loop_control:
         loop_var: vm_network
 
-    - name: Test loop and subelements mdoule
+    - name: with_nested -> loop
       debug:
-        msg: "Found networks {{ item.0.network }} "
-      loop: "{{ vm_networks|subelements('vm_disks') }}"
-
+        msg: "{{ item.0 }} - {{ item.1 }}"
+      loop: "{{ vm_networks|product(vm_disks)|list }}"
