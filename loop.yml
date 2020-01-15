@@ -3,6 +3,7 @@
   hosts: provision
   gather_facts: no
   vars:
+    vm_vars:
     vm_name: rhel81_template_auto
     vcenter_hostname: 10.211.55.49
     vcenter_datacenter: Datacenter
@@ -47,3 +48,9 @@
       with_items: "{{ vm_networks | default([]) }}"
       loop_control:
         loop_var: vm_network
+
+    - name: Test loop and subelements mdoule
+      debug:
+        msg: "Found networks {{ item.0.network }} "
+      loop: "{{ vm_networks|subelements('vm_disks') 1}}"
+1
