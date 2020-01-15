@@ -31,7 +31,7 @@
       - disk:
           - size_gb: 100
           - type: thin
-    iso_location:
+    iso_location: tony_iso_store_bitch
   tasks:
 
     - name: Show VM disk configuration
@@ -52,5 +52,5 @@
     - name: Test loop and subelements mdoule
       debug:
         msg: "Found networks {{ item.0.network }} "
-      loop: "{{ vm_networks|subelements('vm_disks') 1}}"
-1
+      loop: "{{ vm_networks|subelements('vm_disks') }}"
+
