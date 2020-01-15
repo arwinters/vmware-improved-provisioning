@@ -29,9 +29,17 @@
     iso_location:
   tasks:
 
-    - name: Show Disks
+    - name: Show VM disk configuration
       debug:
         msg: "Found disk {{ vm_disk }}"
       with_items: "{{ vm_disks | default([]) }}"
       loop_control:
         loop_var: vm_disk
+
+
+    - name: Show VM network configuration --> {{ vm_networks.network }}
+      debug:
+        msg: "Found disk {{ vm_disk }}"
+      with_items: "{{ vm_networks | default([]) }}"
+      loop_control:
+        loop_var: vm_network
