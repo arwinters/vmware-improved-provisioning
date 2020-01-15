@@ -19,6 +19,10 @@
         ip: 10.211.55.110
         netmask: 255.255.255.0
         device_type: vmxnet3
+      - network: VM Network2
+        ip: 192.168.10.11
+        netmask: 255.255.255.0
+        device_type: vmxnet3
     vm_disks:
       - disk:
           - size_gb: 50
@@ -37,7 +41,7 @@
         loop_var: vm_disk
 
 
-    - name: Show VM network configuration --> {{ vm_network.network }}
+    - name: Show VM network configuration
       debug:
         msg: "Found network {{ vm_network.network }}"
       with_items: "{{ vm_networks | default([]) }}"
