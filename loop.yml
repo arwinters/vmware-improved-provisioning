@@ -39,7 +39,7 @@
 
     - name: Show VM network configuration --> {{ vm_networks.network }}
       debug:
-        msg: "Found disk {{ vm_disk }}"
+        msg: "Found network {{ vm_networks.network }}"
       with_items: "{{ vm_networks | default([]) }}"
       loop_control:
         loop_var: vm_network
