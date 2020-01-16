@@ -71,15 +71,7 @@
         validate_certs: no
         datacenter: "{{ vcenter_datacenter }}"
         name: "{{ vm_name }}"
-        disk:
-          - size_gb:  "{{ vm_disk.disk.size_gb }}"
-            type:  "{{ vm_disk.disk.type }}"
-            datastore: "{{ vm_disk.disk.datastore }}"
-            scsi_controller: "{{ vm_disk.disk.scsi_controller }}"
-            unit_number: "{{ vm_disk.disk.unit_number }}"
-      loop: "{{ vm_disks }}"
-      loop_control:
-        loop_var: vm_disk
+        disk: "{{ vm_disks }}"
       delegate_to: localhost
       register: vm_disk_result
       when: vm_result.failed == false
