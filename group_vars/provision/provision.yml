@@ -29,8 +29,11 @@ vm_disks:
   - disk:
       size_gb: 50
       type: thin
-      datastore: "{{ vm_datastore }}"
+      scsi_controller: "{{ vm_scsi }}"
+      datastore: 0
   - disk:
       size_gb: 100
       type: thin
+      scsi_controller: 1
       datastore: "{{ vm_datastore }}"
+
