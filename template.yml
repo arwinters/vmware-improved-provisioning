@@ -59,9 +59,9 @@
         datacenter: "{{ vcenter_datacenter }}"
         name: "{{ vm_name }}"
         networks:
-          - name: "{{ vm_network.network }}"
-            state:  "{{ vm_network.network.state }}"
-            device_type:  "{{ vm_network.network.device_type }}"
+          - name: "{{ vm_networks.network }}"
+            state:  "{{ vm_networks.network.state }}"
+            device_type:  "{{ vm_networks.network.device_type }}"
       loop: "{{ vm_networks }}"
       loop_control:
         loop_var: vm_network
