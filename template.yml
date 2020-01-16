@@ -49,22 +49,3 @@
       delegate_to: localhost
       register: vm_disk_result
       when: vm_result.failed == false
-
-    - name: Configure VM Networks
-      vmware_guest_network:
-        hostname: "{{ vcenter_hostname }}"
-        username: "{{ vcenter_username }}"
-        password: "{{ vcenter_password }}"
-        validate_certs: no
-        datacenter: "{{ vcenter_datacenter }}"
-        name: "{{ vm_name }}"
-        networks:
-          - name: "{{ vm_networks.name }}"
-            state:  "{{ vm_networks.state }}"
-            device_type:  "{{ vm_networks.device_type }}"
-      loop: "{{ vm_networks }}"
-      loop_control:
-        loop_var: vm_network
-      delegate_to: localhost
-      register: vm_network_result
-      when: vm_result.failed == false
