@@ -26,7 +26,9 @@
           scsi: "{{ vm_scsi }}"
         wait_for_ip_address: no
       delegate_to: localhost
-      register: deploy_vm
+      register: vm_result
+
+    - debug: msg="{{ vm_result }}"
 
     - name: Configure VM Disks
       vmware_guest_disk:
@@ -43,6 +45,8 @@
       loop_control:
         loop_var: vm_disk
       delegate_to: localhost
+      register: vm_disk_result
+      when: vm_result.rc == 0
 
     - name: Configure VM Networks
       vmware_guest_network:
@@ -60,3 +64,6 @@
       loop_control:
         loop_var: vm_network
       delegate_to: localhost
+      register: vm_network_result
+      when: vm_result.rc == 0 and vm_disk_result == 0
+
