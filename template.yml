@@ -29,6 +29,35 @@
       delegate_to: localhost
       register: vm_result
 
+    # Idempotent fix. Ansible seems not to understand te reapply the networking configuration if a adapter is removed.
+    # Which means, that if the something goes wrong, and you rerun the playbook. The VM hardware will not be checked.
+    # And the missing NIC is not added. So that's why we gather network facts after. And if the count of  NICs is less then
+    # we will reconfigure the NICs with the vmware_guest_network module.
+    - name: Gather network adapter facts of vm
+      vmware_guest_network:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        datacenter: "{{ datacenter_name }}"
+        validate_certs: no
+        name: "{{ vm_name }}"
+        gather_network_info: yes
+      register: vm_network_facts
+      
+    - debug: msg="{{ vm_network_facts }}"
+
+    - name: Reconfigure network adapter settings of vm
+      vmware_guest_network:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        datacenter: "{{ datacenter_name }}"
+        validate_certs: no
+        name: "{{ vm_name }}"
+        gather_network_info: no
+      register: vm_network_reconfigure_results
+
+
     - name: Configure VM Disks
       vmware_guest_disk:
         hostname: "{{ vcenter_hostname }}"
