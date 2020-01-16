@@ -37,6 +37,8 @@
         password: "{{ vcenter_password }}"
         validate_certs: no
         datacenter: "{{ vcenter_datacenter }}"
+        use_instance_uuid: yes
+        uuid: vm_result.instance_uuid
         disk:
           - size_gb:  "{{ vm_disk.disk.size_gb }}"
             type:  "{{ vm_disk.disk.type }}"
@@ -46,7 +48,7 @@
         loop_var: vm_disk
       delegate_to: localhost
       register: vm_disk_result
-      when: vm_result.rc == 0
+      when: vm_result.failed == false
 
     - name: Configure VM Networks
       vmware_guest_network:
@@ -55,6 +57,7 @@
         password: "{{ vcenter_password }}"
         validate_certs: no
         datacenter: "{{ vcenter_datacenter }}"
+        uuid: vm_result.instance_uuid
         networks:
           - name: "{{ vm_network.network.name }}"
             ip: "{{ vm_network.network.ip }}"
@@ -65,5 +68,5 @@
         loop_var: vm_network
       delegate_to: localhost
       register: vm_network_result
-      when: vm_result.rc == 0 and vm_disk_result == 0
+      when: vm_result.failed == false and vm_disk_result == 0
 
