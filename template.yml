@@ -37,8 +37,7 @@
         password: "{{ vcenter_password }}"
         validate_certs: no
         datacenter: "{{ vcenter_datacenter }}"
-        use_instance_uuid: yes
-        uuid: vm_result.instance.instance_uuid
+        name: "{{ vm_name }}"
         disk:
           - size_gb:  "{{ vm_disk.disk.size_gb }}"
             type:  "{{ vm_disk.disk.type }}"
@@ -57,7 +56,7 @@
         password: "{{ vcenter_password }}"
         validate_certs: no
         datacenter: "{{ vcenter_datacenter }}"
-        uuid: vm_result.instance.instance_uuid
+        name: "{{ vm_name }}"
         networks:
           - name: "{{ vm_network.network.name }}"
             ip: "{{ vm_network.network.ip }}"
