@@ -4,13 +4,6 @@
   gather_facts: no
   tasks:
 
-    - name: Test loop with_together
-      debug:
-        msg: "Found network --> {{ item.0 }} Found disk --> {{ item.1.disk.size_gb  }}"
-      with_together:
-        - "{{ vm_networks }}"
-        - "{{ vm_disks }}"
-
     - name: Create a RHEL virtual machine
       vmware_guest:
         hostname: "{{ vcenter_hostname }}"
@@ -20,8 +13,8 @@
         datacenter: "{{ vcenter_datacenter }}"
         folder: /Datacenter/vm/
         name: "{{ vm_name }}"
-        state: poweredon
-        customization_spec: rhel81_specs
+        state: poweredoff
+        customization_spec: "{{ vm_customization_spec }}"
         guest_id: "{{ vm_guest_id }}"
         cdrom:
           type: iso
@@ -39,7 +32,7 @@
             ip: "{{ item.1.network.ip }}"
             netmask:  "{{ item.1.network.netmask }}"
             device_type:  "{{ item.1.network.device_type }}"
-        wait_for_ip_address: yes
+        wait_for_ip_address: no
       delegate_to: localhost
       register: deploy_vm
       with_together:
