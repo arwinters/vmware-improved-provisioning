@@ -4,9 +4,6 @@
   gather_facts: no
   tasks:
 
-    - include_vars:
-        file: group_vars/all/vars.yml
-
     - name: Create a RHEL virtual machine
       vmware_guest:
         hostname: "{{ vcenter_hostname }}"
