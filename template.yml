@@ -36,7 +36,7 @@
       loop: "{{ vm_disks }}"
 
     - name: Configure VM Networks
-      vmware_guest_networks:
+      vmware_guest_network:
         networks:
           - name: "{{ item.0.network.name }}"
             ip: "{{ item.0.network.ip }}"
