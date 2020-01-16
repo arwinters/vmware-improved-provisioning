@@ -42,6 +42,7 @@
         validate_certs: no
         name: "{{ vm_name }}"
         gather_network_info: yes
+      delegate_to: localhost
       register: vm_network_facts
 
     - debug: msg="{{ vm_network_facts }}"
@@ -55,6 +56,7 @@
         validate_certs: no
         name: "{{ vm_name }}"
         gather_network_info: no
+      delegate_to: localhost
       register: vm_network_reconfigure_results
 
 
