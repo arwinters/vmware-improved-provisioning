@@ -5,7 +5,7 @@
   tasks:
 
     - include_vars:
-        file: all/vars.yml
+        file: group_vars/all/vars.yml
 
     - name: Create a RHEL virtual machine
       vmware_guest:
