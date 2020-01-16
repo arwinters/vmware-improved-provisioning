@@ -40,11 +40,16 @@ The decoded `metadata` and `userdata` will be applied to the guest operating sys
 * Successfully deployed Red Hat Enterprise 7 and 8 VMs.
 
 
-### TODO
+### Example
 
-* Jinja2 templating for dhcp and static network config.
-* Update README
+Create VM
+```shell script
+ansible-playbook -i inventory.ini main.yml --ask-vault-pass -e '{"vm_name": "vm01"}'
+```
 
-
+Create VM Template
+```shell script
+ansible-playbook -i inventory.ini template.yml --ask-vault-pass -e '{"vm_name": "vm01"}'
+```
 
 NForce-IT - A.R Winters

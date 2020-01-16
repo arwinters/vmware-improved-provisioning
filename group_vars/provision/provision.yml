@@ -31,18 +31,3 @@ vm_disks:
     unit_number: 0
     datastore: "{{ vm_datastore }}"
 
-
-#vm_disks:
-#  - disk:
-#      size_gb: 50
-#      type: thin
-#      scsi_controller: 0
-#      unit_number: 0
-#      datastore: "{{ vm_datastore }}"
-#  - disk:
-#      size_gb: 100
-#      type: thin
-#      scsi_controller: 1
-#      unit_number: 0
-#      datastore: "{{ vm_datastore }}"
-
