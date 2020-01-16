@@ -37,6 +37,7 @@
       loop: "{{ vm_disks }}"
       loop_control:
         loop_var: vm_disk
+      delegate_to: localhost
 
     - name: Configure VM Networks
       vmware_guest_network:
@@ -48,3 +49,4 @@
       loop: "{{ vm_networks }}"
       loop_control:
         loop_var: vm_network
+      delegate_to: localhost
