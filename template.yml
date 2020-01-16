@@ -17,6 +17,7 @@
         customization_spec: "{{ vm_customization_spec }}"
         guest_id: "{{ vm_guest_id }}"
         datastore: "{{ vm_datastore }}"
+        networks: "{{ vm_networks }}"
         cdrom:
           type: iso
           iso_path: "{{ vm_iso }}"
