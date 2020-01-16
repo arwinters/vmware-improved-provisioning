@@ -14,13 +14,13 @@ vm_gateway: 10.211.55.1
 vm_dhcp: false
 vm_networks:
   - network: VM Network
-    ip: 10.211.55.110
-    netmask: 255.255.255.0
-    device_type: vmxnet3
+      ip: 10.211.55.110
+      netmask: 255.255.255.0
+      device_type: vmxnet3
   - network: VM Network 2
-    ip: 192.168.10.11
-    netmask: 255.255.255.0
-    device_type: vmxnet3
+      ip: 192.168.10.11
+      netmask: 255.255.255.0
+      device_type: vmxnet3
 vm_disks:
   - disk:
       size_gb: 50
