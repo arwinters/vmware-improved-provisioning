@@ -47,7 +47,12 @@
 
     - debug: msg="{{ vm_network_facts }}"
 
-    - debug: msg="Tony found NICS --> {{ vm_network_facts.network_data | length }}"
+    - debug: msg="Tony found num of NICS in vm hw config --> {{ vm_network_facts.network_data | length }}"
+    - debug: msg="Tony found num NICS in vm yaml --> {{ vm_networks | length }}"
+
+    - set_fact:
+        num_of_nics_vm: "{{ vm_network_facts.network_data | length }}"
+        num_of_nics_config: "{{ vm_networks | length }}"
 
     - name: Reconfigure network adapter settings of vm
       vmware_guest_network:
@@ -59,6 +64,7 @@
         name: "{{ vm_name }}"
         gather_network_info: no
       delegate_to: localhost
+      when: num_of_nics_vm < num_of_nics_config
       register: vm_network_reconfigure_results
 
 
