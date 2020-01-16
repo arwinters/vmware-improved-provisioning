@@ -69,5 +69,4 @@
         loop_var: vm_network
       delegate_to: localhost
       register: vm_network_result
-      when: vm_result.failed == false and vm_disk_result == 0
-
+      when: vm_result.failed == false
