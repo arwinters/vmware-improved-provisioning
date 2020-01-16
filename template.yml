@@ -38,12 +38,12 @@
         hostname: "{{ vcenter_hostname }}"
         username: "{{ vcenter_username }}"
         password: "{{ vcenter_password }}"
-        datacenter: "{{ datacenter_name }}"
+        datacenter: "{{ vcenter_datacenter }}"
         validate_certs: no
         name: "{{ vm_name }}"
         gather_network_info: yes
       register: vm_network_facts
-      
+
     - debug: msg="{{ vm_network_facts }}"
 
     - name: Reconfigure network adapter settings of vm
@@ -51,7 +51,7 @@
         hostname: "{{ vcenter_hostname }}"
         username: "{{ vcenter_username }}"
         password: "{{ vcenter_password }}"
-        datacenter: "{{ datacenter_name }}"
+        datacenter: "{{ vcenter_datacenter }}"
         validate_certs: no
         name: "{{ vm_name }}"
         gather_network_info: no
