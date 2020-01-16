@@ -30,6 +30,11 @@
 
     - name: Configure VM Disks
       vmware_guest_disk:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: no
+        datacenter: "{{ vcenter_datacenter }}"
         disk:
           - size_gb:  "{{ vm_disk.disk.size_gb }}"
             type:  "{{ vm_disk.disk.type }}"
@@ -41,6 +46,11 @@
 
     - name: Configure VM Networks
       vmware_guest_network:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: no
+        datacenter: "{{ vcenter_datacenter }}"
         networks:
           - name: "{{ vm_network.network.name }}"
             ip: "{{ vm_network.network.ip }}"
