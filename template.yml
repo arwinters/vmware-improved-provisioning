@@ -62,6 +62,7 @@
         datacenter: "{{ vcenter_datacenter }}"
         validate_certs: no
         name: "{{ vm_name }}"
+        networks: "{{ vm_networks }}"
         gather_network_info: no
       delegate_to: localhost
       when: num_of_nics_vm < num_of_nics_config
