@@ -47,6 +47,8 @@
 
     - debug: msg="{{ vm_network_facts }}"
 
+    - debug: msg="Tony found NICS --> {{ vm_network_facts.network_data | length }}"
+
     - name: Reconfigure network adapter settings of vm
       vmware_guest_network:
         hostname: "{{ vcenter_hostname }}"
