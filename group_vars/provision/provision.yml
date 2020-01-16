@@ -13,14 +13,13 @@ vm_gateway: 10.211.55.1
 vm_dhcp: false
 vm_customization_spec: rhel81_specs
 vm_networks:
+  - name: VM Network
+    device_type: vmxnet3
+    state: present
   - network:
-      name: VM Network
-      device_type: vmxnet3
-      state: present
-  - network:
-      name: VM Network 2
-      device_type: vmxnet3
-      state: present
+    name: VM Network 2
+    device_type: vmxnet3
+    state: present
 vm_disks:
   - disk:
       size_gb: 50

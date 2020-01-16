@@ -29,8 +29,6 @@
       delegate_to: localhost
       register: vm_result
 
-    - debug: msg="{{ vm_result }}"
-
     - name: Configure VM Disks
       vmware_guest_disk:
         hostname: "{{ vcenter_hostname }}"
@@ -61,7 +59,7 @@
         datacenter: "{{ vcenter_datacenter }}"
         name: "{{ vm_name }}"
         networks:
-          - name: "{{ vm_network.network.name }}"
+          - name: "{{ vm_network.network }}"
             state:  "{{ vm_network.network.state }}"
             device_type:  "{{ vm_network.network.device_type }}"
       loop: "{{ vm_networks }}"
