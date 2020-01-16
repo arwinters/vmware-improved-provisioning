@@ -29,17 +29,17 @@
 
     - name: Configure VM Disks
       vmware_guest_disk:
-      disk:
-        - size_gb:  "{{ item.0.disk.size_gb }}"
-          type:  "{{ item.0.disk.type }}"
-          datastore: "{{ item.0.disk.datastore }}"
+        disk:
+          - size_gb:  "{{ item.0.disk.size_gb }}"
+            type:  "{{ item.0.disk.type }}"
+            datastore: "{{ item.0.disk.datastore }}"
       loop: "{{ vm_disks }}"
 
     - name: Configure VM Networks
       vmware_guest_networks:
-      networks:
-        - name: "{{ item.0.network.name }}"
-          ip: "{{ item.0.network.ip }}"
-          state:  "{{ item.0.network.state }}"
-          device_type:  "{{ item.0.network.device_type }}"
+        networks:
+          - name: "{{ item.0.network.name }}"
+            ip: "{{ item.0.network.ip }}"
+            state:  "{{ item.0.network.state }}"
+            device_type:  "{{ item.0.network.device_type }}"
       loop: "{{ vm_networks }}"
