@@ -1,1 +1,32 @@
 ---
+vm_name: rhel81_template_auto
+vcenter_hostname: 10.211.55.49
+vcenter_datacenter: Datacenter
+vm_datastore: "datastore1"
+vm_iso: "[datastore1] rhel-8.1-x86_64-dvd.iso"
+#vm_guest_id: rhel7_64Guest
+vm_guest_id: rhel8_64Guest
+vm_num_cpus: 1
+vm_memory_mb: 1024
+vm_scsi: paravirtual
+vm_ip_address: 10.211.55.110/24
+vm_gateway: 10.211.55.1
+vm_dhcp: false
+vm_networks:
+  - network: VM Network
+    ip: 10.211.55.110
+    netmask: 255.255.255.0
+    device_type: vmxnet3
+  - network: VM Network 2
+    ip: 192.168.10.11
+    netmask: 255.255.255.0
+    device_type: vmxnet3
+vm_disks:
+  - disk:
+      - size_gb: 50
+      - type: thin
+      - datastore: "{{ vm_datastore }}"
+  - disk:
+      - size_gb: 100
+      - type: thin
+      - datastore: "{{ vm_datastore }}"

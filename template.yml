@@ -2,17 +2,6 @@
 - name: Deploy VM template from scratch
   hosts: provision
   gather_facts: no
-  vars:
-    vm_name: rhel81_template_auto
-    vcenter_hostname: 10.211.55.49
-    vcenter_datacenter: Datacenter
-    vm_ip_address: 10.211.55.110/24
-    vm_gateway: 10.211.55.1
-    vm_dhcp: false
-    vm_datastore: "datastore1"
-    vm_iso: "[datastore1] rhel-8.1-x86_64-dvd.iso"
-    #vm_guest_id: rhel7_64Guest
-    vm_guest_id: rhel8_64Guest
   tasks:
 
     - name: Create a RHEL virtual machine
@@ -31,18 +20,21 @@
           type: iso
           iso_path: "{{ vm_iso }}"
         disk:
-          - size_gb: 50
-            type: thin
-            datastore: "{{ vm_datastore }}"
+          - size_gb:  "{{ item.0.size_gb }}"
+            type:  "{{ item.0.type }}"
+            datastore: "{{ item.0.datastore }}"
         hardware:
-          memory_mb: 1024
-          num_cpus: 1
-          scsi: paravirtual
+          memory_mb: "{{ vm_memory_mb }}"
+          num_cpus: "{{ vm_num_cpus }}"
+          scsi: "{{ vm_scsi }}"
         networks:
-          - name: VM Network
-            ip: 10.211.55.110
-            netmask: 255.255.255.0
-            device_type: vmxnet3
+          - name: "{{ item.1.name }}"
+            ip: "{{ item.1.ip }}"
+            netmask:  "{{ item.1.netmask }}"
+            device_type:  "{{ item.1.device_type }}"
         wait_for_ip_address: yes
       delegate_to: localhost
       register: deploy_vm
+      with_together:
+        - "{{ vm_networks }}"
+        - "{{ vm_disks }}"
