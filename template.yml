@@ -19,22 +19,27 @@
         cdrom:
           type: iso
           iso_path: "{{ vm_iso }}"
-        disk:
-          - size_gb:  "{{ item.0.disk.size_gb }}"
-            type:  "{{ item.0.disk.type }}"
-            datastore: "{{ item.0.disk.datastore }}"
         hardware:
           memory_mb: "{{ vm_memory_mb }}"
           num_cpus: "{{ vm_num_cpus }}"
           scsi: "{{ vm_scsi }}"
-        networks:
-          - name: "{{ item.1.network.name }}"
-            ip: "{{ item.1.network.ip }}"
-            netmask:  "{{ item.1.network.netmask }}"
-            device_type:  "{{ item.1.network.device_type }}"
         wait_for_ip_address: no
       delegate_to: localhost
       register: deploy_vm
-      with_together:
-        - "{{ vm_disks }}"
-        - "{{ vm_networks }}"
+
+   - name: Configure VM Disks
+     vmware_guest_disk:
+     disk:
+       - size_gb:  "{{ item.0.disk.size_gb }}"
+         type:  "{{ item.0.disk.type }}"
+         datastore: "{{ item.0.disk.datastore }}"
+     loop: "{{ vm_disks }}"
+
+   - name: Configure VM Networks
+     vmware_guest_networks:
+     networks:
+       - name: "{{ item.0.network.name }}"
+         ip: "{{ item.0.network.ip }}"
+         state:  "{{ item.0.network.state }}"
+         device_type:  "{{ item.0.network.device_type }}"
+     loop: "{{ vm_networks }}"
