@@ -4,7 +4,7 @@
   gather_facts: no
   tasks:
 
-    - name: Create a RHEL virtual machine
+    - name: Create virtual machine
       vmware_guest:
         hostname: "{{ vcenter_hostname }}"
         username: "{{ vcenter_username }}"
@@ -29,10 +29,10 @@
       delegate_to: localhost
       register: vm_result
 
-    # Idempotent fix. Ansible seems not to understand te reapply the networking configuration if a adapter is removed.
+    # Idempotent fix. Ansible seems not to understand to reapply the networking configuration if a adapter is removed.
     # Which means, that if the something goes wrong, and you rerun the playbook. The VM hardware will not be checked.
-    # And the missing NIC is not added. So that's why we gather network facts after. And if the count of  NICs is less then
-    # we will reconfigure the NICs with the vmware_guest_network module.
+    # And the missing NIC is not added. So that's why we gather the network facts after vm creation. And if the count of  NICs is less then
+    # the counted nics from the yaml config. We will reconfigure the NICs with the vmware_guest_network module.
     - name: Gather network adapter facts of vm
       vmware_guest_network:
         hostname: "{{ vcenter_hostname }}"
@@ -44,11 +44,6 @@
         gather_network_info: yes
       delegate_to: localhost
       register: vm_network_facts
-
-    - debug: msg="{{ vm_network_facts }}"
-
-    - debug: msg="Tony found num of NICS in vm hw config --> {{ vm_network_facts.network_data | length }}"
-    - debug: msg="Tony found num NICS in vm yaml --> {{ vm_networks | length }}"
 
     - set_fact:
         num_of_nics_vm: "{{ vm_network_facts.network_data | length }}"
@@ -67,7 +62,6 @@
       delegate_to: localhost
       when: num_of_nics_vm < num_of_nics_config
       register: vm_network_reconfigure_results
-
 
     - name: Configure VM Disks
       vmware_guest_disk:
