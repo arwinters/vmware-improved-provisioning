@@ -61,7 +61,6 @@
         name: "{{ vm_name }}"
         networks:
           - name: "{{ vm_network.network.name }}"
-            ip: "{{ vm_network.network.ip }}"
             state:  "{{ vm_network.network.state }}"
             device_type:  "{{ vm_network.network.device_type }}"
       loop: "{{ vm_networks }}"
