@@ -15,10 +15,10 @@ vm_customization_spec: rhel81_specs
 vm_networks:
   - name: VM Network
     device_type: vmxnet3
-    state: present
+    state: new
   - name: VM Network 2
     device_type: vmxnet3
-    state: present
+    state: new
 vm_disks:
   - disk:
       size_gb: 50
