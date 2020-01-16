@@ -36,5 +36,5 @@
       delegate_to: localhost
       register: deploy_vm
       with_together:
-        - "{{ vm_networks }}"
         - "{{ vm_disks }}"
+        - "{{ vm_networks }}"
