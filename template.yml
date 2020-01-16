@@ -4,6 +4,13 @@
   gather_facts: no
   tasks:
 
+    - name: Test loop with_together
+      debug:
+        msg: "Found network --> {{ item.0 }} Found disk --> {{ item.1.disk.size_gb  }}"
+      with_together:
+        - "{{ vm_networks }}"
+        - "{{ vm_disks }}"
+
     - name: Create a RHEL virtual machine
       vmware_guest:
         hostname: "{{ vcenter_hostname }}"

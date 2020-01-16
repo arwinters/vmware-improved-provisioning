@@ -23,10 +23,10 @@ vm_networks:
     device_type: vmxnet3
 vm_disks:
   - disk:
-      - size_gb: 50
-      - type: thin
-      - datastore: "{{ vm_datastore }}"
+      size_gb: 50
+      type: thin
+      datastore: "{{ vm_datastore }}"
   - disk:
-      - size_gb: 100
-      - type: thin
-      - datastore: "{{ vm_datastore }}"
+      size_gb: 100
+      type: thin
+      datastore: "{{ vm_datastore }}"
