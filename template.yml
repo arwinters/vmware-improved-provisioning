@@ -1,0 +1,77 @@
+---
+- name: Deploy VM template from scratch
+  hosts: provision
+  gather_facts: no
+  tasks:
+
+    - name: Create virtual machine
+      vmware_guest:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: no
+        datacenter: "{{ vcenter_datacenter }}"
+        folder: /Datacenter/vm/
+        name: "{{ vm_name }}"
+        state: poweredoff
+        customization_spec: "{{ vm_customization_spec }}"
+        guest_id: "{{ vm_guest_id }}"
+        datastore: "{{ vm_datastore }}"
+        networks: "{{ vm_networks }}"
+        cdrom:
+          type: iso
+          iso_path: "{{ vm_iso }}"
+        hardware:
+          memory_mb: "{{ vm_memory_mb }}"
+          num_cpus: "{{ vm_num_cpus }}"
+          scsi: "{{ vm_scsi }}"
+        wait_for_ip_address: no
+      delegate_to: localhost
+      register: vm_result
+
+    # Idempotent fix. Ansible seems not to understand to reapply the networking configuration if a adapter is removed.
+    # Which means, that if the something goes wrong, and you rerun the playbook. The VM hardware will not be checked.
+    # And the missing NIC is not added. So that's why we gather the network facts after vm creation. And if the count of  NICs is less then
+    # the counted nics from the yaml config. We will reconfigure the NICs with the vmware_guest_network module.
+    - name: Gather network adapter facts of vm
+      vmware_guest_network:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        datacenter: "{{ vcenter_datacenter }}"
+        validate_certs: no
+        name: "{{ vm_name }}"
+        gather_network_info: yes
+      delegate_to: localhost
+      register: vm_network_facts
+
+    - set_fact:
+        num_of_nics_vm: "{{ vm_network_facts.network_data | length }}"
+        num_of_nics_config: "{{ vm_networks | length }}"
+
+    - name: Reconfigure network adapter settings of vm
+      vmware_guest_network:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        datacenter: "{{ vcenter_datacenter }}"
+        validate_certs: no
+        name: "{{ vm_name }}"
+        networks: "{{ vm_networks }}"
+        gather_network_info: no
+      delegate_to: localhost
+      when: num_of_nics_vm < num_of_nics_config
+      register: vm_network_reconfigure_results
+
+    - name: Configure VM Disks
+      vmware_guest_disk:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: no
+        datacenter: "{{ vcenter_datacenter }}"
+        name: "{{ vm_name }}"
+        disk: "{{ vm_disks }}"
+      delegate_to: localhost
+      register: vm_disk_result
+      when: vm_result.failed == false

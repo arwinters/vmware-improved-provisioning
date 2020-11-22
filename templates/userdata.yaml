@@ -2,8 +2,8 @@
 
 users:
   - default
-  - name: cloud-user
-    primary_group: wheel
+  - name: ansible_linux
+    primary_group: ansible_linux
     sudo: ALL=(ALL) NOPASSWD:ALL
     groups: sudo, wheel
     ssh_import_id: None
